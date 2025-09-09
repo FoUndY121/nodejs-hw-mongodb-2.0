@@ -3,6 +3,7 @@ import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { loginUserSchema, registerUserSchema } from '../validation/auth.js';
 import {
   loginUserController,
+  logoutUserController,
   registerUserController,
 } from '../controllers/auth.js';
 import { validateBody } from '../middlewares/validateBody.js';
@@ -15,10 +16,14 @@ router.post(
   ctrlWrapper(registerUserController),
 );
 
-router.post('/login', (req, res) => {
-  validateBody(loginUserSchema);
-  ctrlWrapper(loginUserController);
-});
+router.post(
+  '/login',
+  validateBody(loginUserSchema),
+  ctrlWrapper(loginUserController),
+);
+
+router.post('/logout', ctrlWrapper(logoutUserController));
+router.post('/refresh', ctrlWrapper(loginUserController));
 console.log('✅ auth router loaded');
 
 export default router;
