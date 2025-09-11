@@ -13,6 +13,7 @@ export const registerUser = async (payload) => {
   return await UsersCollection.create({
     ...payload,
     password: encryptedPassword,
+    role: payload.role || 'parent',
   });
 };
 export const loginUser = async (payload) => {
