@@ -11,43 +11,56 @@ import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
 export const getAllContactsController = async (req, res, next) => {
   try {
-    const data = await getAllContacts();
+    const { sortBy, sortOrder } = parseSortParams(req.query);
+    const { page, perPage } = parsePaginationParams(req.query);
+    const filter = parseFilterParams(req.query);
+
+    const contacts = await getAllContacts({
+      userId: req.user._id,
+      page,
+      perPage,
+      sortBy,
+      sortOrder,
+      filter,
+    });
+
     res.status(200).json({
       status: 200,
       message: 'Successfully found contacts!',
-      data,
+      data: contacts,
     });
   } catch (error) {
     next(error);
   }
 };
+
 export const getContactByIdController = async (req, res, next) => {
   const { contactId } = req.params;
-  const data = await getContactById(contactId);
+  const data = await getContactById(contactId, req.user._id);
   if (!data) {
-    // throw это передача ошибки в middleware errorHandler а точнее мы передаем в createHttpError то есть операция throw прерывает выполнение функции и передает управление в следующий middleware
     throw createHttpError(404, 'Contact not found');
   }
   res.status(200).json({
     status: 200,
     message: 'Successfully found contact!',
-    data: data,
+    data,
   });
 };
+
 export const createStudentController = async (req, res) => {
-  const student = await createContact(req.body);
+  const student = await createContact(req.body, req.user._id);
   res.status(201).json({
     status: 201,
     message: 'Student created',
     data: student,
   });
 };
+
 export const deleteContactController = async (req, res) => {
   const { contactId } = req.params;
-  const contact = await deleteContact(contactId);
+  const contact = await deleteContact(contactId, req.user._id);
   if (!contact) {
     throw createHttpError(404, 'Contact not found');
-    return;
   }
   res.status(200).json({
     status: 200,
@@ -58,7 +71,9 @@ export const deleteContactController = async (req, res) => {
 
 export const upsertContactController = async (req, res, next) => {
   const { contactId } = req.params;
-  const result = await upsertContact(contactId, req.body, { upsert: true });
+  const result = await upsertContact(contactId, req.body, req.user._id, {
+    upsert: true,
+  });
   if (!result) {
     next(createHttpError(404, 'Contact not found'));
     return;
@@ -73,7 +88,7 @@ export const upsertContactController = async (req, res, next) => {
 
 export const patchContactController = async (req, res, next) => {
   const { contactId } = req.params;
-  const result = await upsertContact(contactId, req.body);
+  const result = await upsertContact(contactId, req.body, req.user._id); // <- userId
   if (!result) {
     next(createHttpError(404, 'Contact not found'));
     return;
@@ -90,13 +105,15 @@ export const getContactsController = async (req, res, next) => {
     const { sortBy, sortOrder } = parseSortParams(req.query);
     const { page, perPage } = parsePaginationParams(req.query);
     const filter = parseFilterParams(req.query);
+
     const contacts = await getAllContacts({
       page,
       perPage,
       sortBy,
       sortOrder,
       filter,
-    }); // вызывать сервис, а не контроллер
+      userId: req.user._id,
+    });
 
     res.json({
       status: 200,

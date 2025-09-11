@@ -14,13 +14,13 @@ export const createContactSchema = Joi.object({
     'number.max': `"age" should be at most {#limit}`,
     'any.required': `"age" is required`,
   }),
-  gender: Joi.string().valid('male', 'female', 'other').required().messages({
+  gender: Joi.string().valid('male', 'female', 'other').messages({
     'any.only': `"gender" must be one of [male, female, other]`,
     'any.required': `"gender" is required`,
   }),
   avgMark: Joi.number().min(2).max(12),
   onDuty: Joi.boolean(),
-  phoneNumber: Joi.string(),
+  phoneNumber: Joi.string().required(),
   email: Joi.string().email(),
   parentId: Joi.string().custom((value, helper) => {
     if (value && !isValidObjectId(value)) {
