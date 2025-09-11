@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const { Schema, model } = mongoose;
 
@@ -22,12 +22,17 @@ const contactSchema = new Schema(
     },
     contactType: {
       type: String,
-      enum: ["work", "home", "personal"],
+      enum: ['work', 'home', 'personal'],
       required: true,
-      default: "personal",
+      default: 'personal',
+    },
+    parentId: {
+      // нова властивість
+      type: Schema.Types.ObjectId,
+      ref: 'users',
     },
   },
-  { timestamps: true } // автоматично додає createdAt та updatedAt
+  { timestamps: true }, // автоматично додає createdAt та updatedAt
 );
 
-export const Contact = model("Contact", contactSchema);
+export const Contact = model('Contact', contactSchema);
