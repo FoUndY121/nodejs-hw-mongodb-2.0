@@ -8,7 +8,7 @@ export const createContactSchema = Joi.object({
     'string.max': `"name" should have a maximum length of {#limit}`,
     'any.required': `"name" is a required field`,
   }),
-  age: Joi.number().integer().min(6).max(16).required().messages({
+  age: Joi.number().integer().min(6).max(16).messages({
     'number.base': `"age" should be a number`,
     'number.min': `"age" should be at least {#limit}`,
     'number.max': `"age" should be at most {#limit}`,
@@ -20,8 +20,10 @@ export const createContactSchema = Joi.object({
   }),
   avgMark: Joi.number().min(2).max(12),
   onDuty: Joi.boolean(),
+  isFavourite: Joi.boolean(),
   phoneNumber: Joi.string().required(),
   email: Joi.string().email(),
+  contactType: Joi.string().valid('work', 'home', 'personal').required(),
   parentId: Joi.string().custom((value, helper) => {
     if (value && !isValidObjectId(value)) {
       return helper.message('Parent id should be a valid mongo id');
