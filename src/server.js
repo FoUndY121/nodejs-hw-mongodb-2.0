@@ -7,9 +7,12 @@ import router from './routers/index.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import cookieParser from 'cookie-parser';
+import { UPLOAD_DIR } from './constants/index.js';
 export const setupServer = () => {
   dotenv.config();
+
   const app = express();
+  app.use(express.json());
   app.use(
     express.json({
       type: ['application/json', 'application/vnd.api+json'],
@@ -32,7 +35,7 @@ export const setupServer = () => {
       message: 'Hello world!',
     });
   });
-
+  app.use('/uploads', express.static(UPLOAD_DIR));
   app.use(router);
 
   // в новом експресе нету маршрута * и надо использовать либо так либо через app.all

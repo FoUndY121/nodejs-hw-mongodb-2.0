@@ -20,6 +20,7 @@ const contactSchema = new Schema(
       type: Boolean,
       default: false,
     },
+
     contactType: {
       type: String,
       enum: ['work', 'home', 'personal'],
@@ -31,6 +32,7 @@ const contactSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'users',
     },
+    photo: { type: String },
   },
   { timestamps: true }, // автоматично додає createdAt та updatedAt
 );

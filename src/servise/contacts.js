@@ -78,15 +78,15 @@ export const upsertContact = async (
   const contact = await Contact.findOneAndUpdate(
     { _id: contactId, userID: userId },
     payload,
-    { new: true, includeResultMetadata: true, ...options },
+    { new: true, ...options },
   );
 
-  if (!contact || !contact.value) {
+  if (!contact) {
     return null;
   }
 
   return {
-    contact: contact.value,
-    isNew: Boolean(contact?.lastErrorObject?.upserted),
+    contact,
+    isNew: false,
   };
 };
