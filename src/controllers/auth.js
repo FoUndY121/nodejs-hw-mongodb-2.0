@@ -10,12 +10,16 @@ import { ONE_DAY } from '../constants/index.js';
 
 export const registerUserController = async (req, res) => {
   const user = await registerUser(req.body);
+
+  const { password, ...userWithoutPassword } = user.toObject();
+
   res.status(201).json({
     status: 201,
     message: 'User registered',
-    data: user,
+    data: userWithoutPassword,
   });
 };
+
 export const loginUserController = async (req, res) => {
   const session = await loginUser(req.body);
   res.cookie('refreshToken', session.refreshToken, {

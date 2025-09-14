@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { upload } from '../middlewares/multer.js';
 import {
-  createStudentController,
+  createContactController,
   deleteContactController,
   getAllContactsController,
   getContactByIdController,
@@ -27,8 +27,9 @@ router.get('/:contactId', isValidId, ctrlWrapper(getContactByIdController));
 
 router.post(
   '/',
+  upload.single('photo'),
   validateBody(createContactSchema),
-  ctrlWrapper(createStudentController),
+  ctrlWrapper(createContactController),
 );
 
 router.delete('/:contactId', isValidId, ctrlWrapper(deleteContactController));

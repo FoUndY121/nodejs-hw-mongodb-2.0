@@ -49,14 +49,34 @@ export const getContactByIdController = async (req, res, next) => {
     data,
   });
 };
+export const createContactController = async (req, res, next) => {
+  try {
+    const photo = req.file;
+    let photoUrl;
 
-export const createStudentController = async (req, res) => {
-  const student = await createContact(req.body, req.user._id);
-  res.status(201).json({
-    status: 201,
-    message: 'Student created',
-    data: student,
-  });
+    if (photo) {
+      if (getEnvVar('ENABLE_CLOUDINARY') === 'true') {
+        photoUrl = await saveFileToCloudinary(photo);
+      } else {
+        photoUrl = await saveFileToUploadDir(photo);
+      }
+    }
+
+    const newContactData = {
+      ...req.body,
+      ...(photoUrl && { photo: photoUrl }), // додаємо фото, якщо є
+    };
+
+    const contact = await createContact(newContactData, req.user._id);
+
+    res.status(201).json({
+      status: 201,
+      message: 'Contact created',
+      data: contact,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const deleteContactController = async (req, res) => {
