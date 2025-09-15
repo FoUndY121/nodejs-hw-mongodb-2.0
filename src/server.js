@@ -8,6 +8,7 @@ import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import cookieParser from 'cookie-parser';
 import { UPLOAD_DIR } from './constants/index.js';
+import { swaggerDocs } from './middlewares/swaggerDocs.js';
 export const setupServer = () => {
   dotenv.config();
 
@@ -29,6 +30,9 @@ export const setupServer = () => {
     }),
   );
   app.use(cors());
+
+  app.use('/uploads', express.static(UPLOAD_DIR));
+  app.use('/api-docs', swaggerDocs());
   app.use(cookieParser());
   app.get('/', (req, res) => {
     res.json({

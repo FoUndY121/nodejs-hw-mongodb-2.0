@@ -1,0 +1,11 @@
+apis:
+  sample@v1:
+    root: docs/openapi.yaml
+
+extends:
+  - recommended
+
+rules:
+  no-unused-components: error
+
+# Для генерации HTML и темы используем app или bundle опции

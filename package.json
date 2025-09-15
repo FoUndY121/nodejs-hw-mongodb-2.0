@@ -4,7 +4,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "build": "npm run build-docs",
+    "build-docs": "redocly bundle docs/openapi.yaml --ext json -o docs/swagger.json",
+    "preview-docs": "redocly preview --port 8080"
   },
   "keywords": [],
   "author": "foundy",
@@ -18,6 +21,7 @@
     "dotenv": "^17.2.1",
     "eslint": "^9.2.0",
     "express": "^5.1.0",
+    "google-auth-library": "^10.3.0",
     "handlebars": "^4.7.8",
     "http-errors": "^2.0.0",
     "joi": "^18.0.1",
@@ -26,10 +30,12 @@
     "multer": "^2.0.2",
     "nodemailer": "^7.0.6",
     "nodemon": "^3.1.10",
-    "pino-http": "^10.5.0"
+    "pino-http": "^10.5.0",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
+    "@redocly/cli": "^2.1.2",
     "cors": "^2.8.5",
     "eslint": "^9.33.0",
     "globals": "^16.3.0",
