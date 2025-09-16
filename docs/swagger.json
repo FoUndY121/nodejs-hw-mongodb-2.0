@@ -484,7 +484,8 @@
           "_id",
           "name",
           "phoneNumber",
-          "contactType"
+          "contactType",
+          "userId"
         ],
         "properties": {
           "_id": {
