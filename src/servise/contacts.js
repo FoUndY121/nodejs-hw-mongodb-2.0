@@ -13,26 +13,11 @@ export const getAllContacts = async ({
   const limit = perPage;
   const skip = (page - 1) * perPage;
 
-  const contactsQuery = Contact.find({ userID: userId });
+  const baseFilter = { userID: userId, ...filter };
 
-  if (filter.gender) {
-    contactsQuery.where('gender').equals(filter.gender);
-  }
-  if (filter.maxAge) {
-    contactsQuery.where('age').lte(filter.maxAge);
-  }
-  if (filter.minAge) {
-    contactsQuery.where('age').gte(filter.minAge);
-  }
-  if (filter.maxAvgMark) {
-    contactsQuery.where('avgMark').lte(filter.maxAvgMark);
-  }
-  if (filter.minAvgMark) {
-    contactsQuery.where('avgMark').gte(filter.minAvgMark);
-  }
+  const contactCount = await Contact.countDocuments(baseFilter);
 
-  const contactCount = await Contact.countDocuments({ userID: userId });
-  const contacts = await contactsQuery
+  const contacts = await Contact.find(baseFilter)
     .skip(skip)
     .limit(limit)
     .sort({ [sortBy]: sortOrder })

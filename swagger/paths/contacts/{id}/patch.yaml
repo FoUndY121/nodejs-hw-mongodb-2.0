@@ -2,7 +2,7 @@ tags:
   - Contacts
 summary: Update contact by id
 operationId: updateContact
-description: Update fields of an existing contact
+description: Update contact details by id
 security:
   - bearerAuth: []
 parameters:
@@ -13,33 +13,46 @@ parameters:
       type: string
       example: '65ca67e7ae7f10c88b598384'
 requestBody:
-  required: true
   content:
     multipart/form-data:
       schema:
         type: object
+        required:
+          - name
+          - phoneNumber
+          - contactType
         properties:
           name:
             type: string
-            example: 'Updated Name'
+            description: Updated contact name
+            minLength: 3
+            maxLength: 20
+            example: 'Maria Ivanova'
           phoneNumber:
             type: string
-            example: '0987654321'
+            description: Updated phone number
+            example: 380671234567
           email:
             type: string
-            example: 'updated.email@example.com'
+            format: email
+            description: Updated email
+            example: 'maria.ivanova@email.com'
           isFavourite:
             type: boolean
+            description: Updated favorite status
             example: false
           contactType:
             type: string
-            enum: [work, home, personal]
+            enum: ['work', 'home', 'personal']
+            description: Updated contact type
           photo:
             type: string
             format: binary
+            description: Image file to upload (optional)
+  required: false
 responses:
   '200':
-    description: Contact updated successfully
+    description: Contact updated
     content:
       application/json:
         schema:
@@ -54,13 +67,8 @@ responses:
               example: 200
             message:
               type: string
-              example: Contact updated successfully!
+              example: Successfully updated contact!
             data:
-              type: object
-              $ref: ../../../components/schemas/contact.yaml
-  '400':
-    description: Invalid input or bad request
+              $ref: '../../../components/schemas/contact.yaml'
   '401':
-    $ref: '../../../components/responses/404.yaml'
-  '404':
-    description: Contact not found
+    $ref: '../../../components/responses/401.yaml'

@@ -13,29 +13,30 @@ requestBody:
         required:
           - name
           - phoneNumber
+          - contactType
         properties:
           name:
-            description: 'Contact name'
+            description: "Contact's name"
             type: string
-            example: 'Ratatouille'
+            example: 'Maria Ivanova'
           phoneNumber:
-            description: 'Phone number'
-            type: string
-            example: '087263791982'
+            description: "Contact's phoneNumber"
+            type: number
+            example: 380671234567
           email:
-            description: 'Contact email'
+            description: "Contact's email"
             type: string
-            example: 'ratatouille@gmail.com'
+            example: 'maria.ivanova@email.com'
           isFavourite:
-            description: 'Whether a contact has been added to favorites'
+            description: "Contact's isFavourite"
             type: boolean
-            example: true
+            example: false
           contactType:
-            description: 'Contact type'
+            description: "Contact's contactType"
             type: string
-            enum: ['work', 'home', 'personal']
+            example: 'personal'
           photo:
-            description: "Link to contact's photo"
+            description: "Contact's photo"
             type: string
             format: binary
 responses:
@@ -60,4 +61,4 @@ responses:
               type: object
               $ref: ../../components/schemas/contact.yaml
   '401':
-    $ref: '../../components/responses/404.yaml'
+    $ref: '../../components/responses/401.yaml'
