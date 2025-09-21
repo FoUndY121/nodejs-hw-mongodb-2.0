@@ -274,7 +274,7 @@
         }
       }
     },
-    "/contact/{id}": {
+    "/contacts/{contactId}": {
       "get": {
         "tags": [
           "Contacts"
@@ -290,7 +290,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "id",
+            "name": "contactId",
             "required": true,
             "schema": {
               "type": "string",
@@ -388,7 +388,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "id",
+            "name": "contactId",
             "required": true,
             "schema": {
               "type": "string",
@@ -412,7 +412,7 @@
                   "phoneNumber": {
                     "type": "string",
                     "description": "Updated phone number",
-                    "example": 380671234567
+                    "example": "380671234567"
                   },
                   "email": {
                     "type": "string",
@@ -534,7 +534,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "id",
+            "name": "contactId",
             "required": true,
             "schema": {
               "type": "string",
